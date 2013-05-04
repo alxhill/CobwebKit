@@ -98,7 +98,7 @@ public class Program implements Runnable {
 
     public void run()
     {
-        JFrame w = new JFrame();
+        JFrame w = new JFrame(windowTitle);
         w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         w.add(view);
         w.pack();
