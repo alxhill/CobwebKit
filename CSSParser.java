@@ -2,6 +2,12 @@ import java.util.ArrayList;
 
 public class CSSParser {
 
+    /**
+     * Creates a list of Styles (which have a selector and a rule)
+     * from a string of CSS
+     * @param  css String of raw CSS
+     * @return     List of all styles as in original order.
+     */
     public static ArrayList<Style> parse(String css)
     {
         ArrayList<Style> styleList = new ArrayList<Style>();

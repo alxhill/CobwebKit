@@ -21,6 +21,13 @@ class Style {
         this.selector = selector;
         selectorList = new ArrayList<HashMap<SelectorType,String>>();
 
+        // splits up the selector into an array of hashmaps
+        // styles only ever have one unique selector (as different rules are
+        // split by commas before creating a style from them).
+        // So this turns something like:
+        // #container a.test into an array of hashmaps like this:
+        // [{ID=container}, {TAG=a, CLASS=test}]
+        // This enables us to filter tags downwards so they apply to the correct elements.
         for (String singleSelector : selector.split(" "))
         {
             HashMap<SelectorType,String> ruleMap = new HashMap<SelectorType,String>();
@@ -55,6 +62,10 @@ class Style {
 
     public Boolean shouldApplyStyle()
     {
+        // only apply the style to this element if it the last element
+        // in the set of single selectors.
+        // for example, the selector #container a.test should only apply
+        // its styles on the a element, not on the container.
         return currentSelector == selectorList.size()-1;
     }
 

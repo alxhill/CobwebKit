@@ -21,7 +21,7 @@ public class Node
 
     public Node(String tag, String data)
     {
-        //set always invalid defaults for applying styles against
+        //set blank defaults for applying styles against
         attributes.put("tag", tag);
         attributes.put("id", "");
         attributes.put("class", "");
@@ -29,6 +29,23 @@ public class Node
         this.data = data;
     }
 
+    /**
+     * uses parseAttributes and parseContent to process the html string.
+     * Before: <div class="blue"><p>...</p></div><h2>...
+     * Returns: <h2>...
+     */
+    public String parse()
+    {
+        parseAttributes();
+        return parseContent();
+    }
+
+    /**
+     * Parses out attributes and puts them into the attributes map
+     * Before the call, data will be <div id="blue"><p>...
+     * After the function call, data will have had the initial tag
+     * removed: <p>... will be stored in data.
+     */
     public void parseAttributes()
     {
         // get rid of the tag name and opening bracket
@@ -58,12 +75,14 @@ public class Node
         data = data.substring(attributeString.length()+2);
     }
 
-    public String parse()
-    {
-        parseAttributes();
-        return parseContent();
-    }
-
+    /**
+     * takes a string and turns it into nodes
+     * accepts the data with the start tag removed,
+     * returns the string with any content it's parsed
+     * removed.
+     * Before: <p>...</p></div><h2>...
+     * Returns: <h2>...
+     */
     public String parseContent()
     {
         String currentText = data;
@@ -93,6 +112,11 @@ public class Node
 
     }
 
+    /**
+     * Find all nodes with given tag
+     * @param  tag the tag to find
+     * @return     A list of Nodes with the specified tag.
+     */
     public ArrayList<Node> findNodesByTag(String tag)
     {
         if (nodes != null)
@@ -109,6 +133,11 @@ public class Node
         else return null;
     }
 
+    /**
+     * Applies CSS to this element and it's children,
+     * or just passes the rule on depending on whether it matches
+     * @param style The Style object to apply
+     */
     public void applyCSS(Style style)
     {
         HashMap<Style.SelectorType, String> styleArray = style.getCurrentSelector();
