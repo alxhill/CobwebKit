@@ -1,4 +1,4 @@
 CobwebKit
 =========
 
-The world worst browser engine.
+The worlds worst browser engine.
