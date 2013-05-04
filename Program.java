@@ -1,41 +1,57 @@
 import java.io.*;
 import java.util.ArrayList;
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.*;
 
 public class Program implements Runnable {
 
-    Node htmlNodes;
     String windowTitle;
     ArrayList<Style> styleList;
+
+    Node html;
+    Node head;
+    Node body;
+
+    PageView view = new PageView();
+
+    // small internal class that renders the body element
+    private class PageView extends JPanel {
+
+        PageView()
+        {
+            setPreferredSize(new Dimension(800, 600));
+        }
+
+        public void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            body.render(g2);
+        }
+    }
 
     public static void main(String[] args)
     {
         String filename = args[0];
         Program program = new Program();
-        Node n = program.loadData(filename);
-        program.getHTMLData();
-        program.setStyles();
-        program.render();
-        System.out.println(program.htmlNodes);
+        String htmlString = program.readFile(filename);
+        program.parseData(htmlString);
+        System.out.println(program.html);
+
+        SwingUtilities.invokeLater(program);
     }
 
-    public Node loadData(String filename)
+    public void parseData(String htmlString)
     {
-        return htmlNodes = HTMLParser.parse(readFile(filename));
-    }
-
-    // extract information from the parsed HTML data.
-    // at the moment this is only the title of the page and
-    // the contents of any style tags.
-    public void getHTMLData()
-    {
-        Node head = htmlNodes.findNodesByTag("head").get(0);
+        html = HTMLParser.parse(htmlString);
+        head = html.findNodesByTag("head").get(0);
+        body = html.findNodesByTag("body").get(0);
 
         // get the title of the page.
         Node title = head.findNodesByTag("title").get(0);
         windowTitle = title.text;
 
+        // get the CSS elements + the default file all in one string
         String stylesheet = readFile("default.css");
         ArrayList<Node> styles = head.findNodesByTag("style");
         for (Node style : styles)
@@ -47,14 +63,11 @@ public class Program implements Runnable {
             }
         }
 
+        // parse the CSS and apply it to the html
         styleList = CSSParser.parse(stylesheet);
-    }
-
-    public void setStyles()
-    {
         for (Style style : styleList)
         {
-            htmlNodes.applyCSS(style);
+            html.applyCSS(style);
         }
     }
 
@@ -82,5 +95,17 @@ public class Program implements Runnable {
         }
         return data;
     }
+
+    public void run()
+    {
+        JFrame w = new JFrame();
+        w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        w.add(view);
+        w.pack();
+        w.setLocationByPlatform(true);
+        w.setVisible(true);
+    }
+
+
 
 }

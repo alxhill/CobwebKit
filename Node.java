@@ -1,6 +1,7 @@
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.awt.*;
 
 public class Node
 {
@@ -178,6 +179,24 @@ public class Node
     public void addRules(HashMap<String,String> rules)
     {
         this.rules.putAll(rules);
+    }
+
+    public void render(Graphics2D g)
+    {
+        if (nodes ==  null)
+        {
+            FontMetrics metrics = g.getFontMetrics();
+            g.drawString(text, 10, 10);
+            g.translate(0, metrics.getHeight());
+        }
+        else
+        {
+            for (Node node : nodes)
+            {
+                node.render(g);
+            }
+
+        }
     }
 
     public String toString()
