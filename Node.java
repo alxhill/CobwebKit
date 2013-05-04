@@ -20,6 +20,10 @@ public class Node
     // or just store text
     String text = null;
 
+    private enum Rule {
+        COLOR, FONTSIZE
+    }
+
     public Node(String tag, String data)
     {
         //set blank defaults for applying styles against
@@ -183,11 +187,18 @@ public class Node
 
     public void render(Graphics2D g)
     {
+        // apply the current CSS styles to the graphics object
+        for (Map.Entry<String, String> rule : rules.entrySet())
+        {
+            applyRule(g, rule.getKey(), rule.getValue());
+        }
+
+        // render this if text or the nodes if not.
         if (nodes ==  null)
         {
             FontMetrics metrics = g.getFontMetrics();
-            g.drawString(text, 10, 10);
             g.translate(0, metrics.getHeight());
+            g.drawString(text, 0, 0);
         }
         else
         {
@@ -196,6 +207,37 @@ public class Node
                 node.render(g);
             }
 
+        }
+    }
+
+    public void applyRule(Graphics2D g, String property, String value)
+    {
+        Rule name = Rule.valueOf(property.replace("-", "").toUpperCase());
+        switch (name)
+        {
+            case COLOR:
+                Color c;
+                if (value.startsWith("#"))
+                    c = Color.decode(value);
+                else
+                {
+                    try {
+                        c = (Color) Class.forName("java.awt.Color").getField(value.toLowerCase()).get(null);
+                    } catch (Exception e)
+                    {
+                        c = Color.BLACK;
+                    }
+                }
+                g.setColor(c);
+                break;
+            case FONTSIZE:
+                Font f = g.getFont();
+                int size;
+                // value better end in px...
+                size = Integer.parseInt(value.substring(0, value.indexOf("px")));
+                g.setFont(new Font(f.getName(), f.getStyle(), size));
+                break;
+            default: throw new Error("unknown CSS rule.");
         }
     }
 
