@@ -13,9 +13,17 @@ Currently it is able to:
 * Renders with correct CSS styles
 
 To do:
-* Implement support for WAY more styles
-* Make parsing and rendering a little more robust
 * Create a set of default styles
+* Implement support for more rules
+    * font stuff
+        font-weight, font-family, font-style
+    * padding/margin - will be equivalent
+    * text-{align:center, decoration: underline}
+
+* Add support for img tags
+* Make the parser able to have text and nodes alongside each other
+* Make parsing and rendering more robust
+* Selector specificity
 * Add support for inline styles
 * Add support for link tags
 * Add support for a tags/links?
