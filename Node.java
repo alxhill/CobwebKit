@@ -37,6 +37,8 @@ public class Node
 
     int margin[] = new int[4];
 
+    LineBreakMeasurer measurer = null;
+
     public Node(String tag, String data)
     {
         //set blank defaults for applying styles against
@@ -103,6 +105,7 @@ public class Node
      */
     public String parseContent()
     {
+        data = data.trim();
         String currentText = data;
         if (currentText.charAt(0) == '<')
         {
@@ -125,6 +128,7 @@ public class Node
 
             // save the contents minus the tags into the text variable
             text = data.substring(0, endTagIndex);
+            if (name.equals("li")) text = "\u2022 " + text;
             return data.substring(endTagIndex + endTag.length());
         }
 
@@ -198,6 +202,17 @@ public class Node
         }
     }
 
+    private LineBreakMeasurer getMeasurer(Graphics2D g)
+    {
+        if (measurer == null)
+        {
+            AttributedString attrText = new AttributedString(text, g.getFont().getAttributes());
+            return measurer = new LineBreakMeasurer(attrText.getIterator(), g.getFontRenderContext());
+        }
+
+        return measurer;
+    }
+
     /**
      * Render the current element, with the canvas moved to the right place for
      * the next element
@@ -217,22 +232,24 @@ public class Node
                 applyRule(g2, rule.getKey(), rule.getValue());
             }
 
-            AttributedString attrText = new AttributedString(text, g2.getFont().getAttributes());
-            LineBreakMeasurer measurer = new LineBreakMeasurer(attrText.getIterator(), g2.getFontRenderContext());
+            LineBreakMeasurer measurer = getMeasurer(g2);
 
             Dimension size = getSize(g2);
 
-            g2.translate(margin[0], size.getHeight()+margin[1]);
 
             int drawLinePos = 0;
+            int lineHeight = g2.getFontMetrics().getHeight();
+            measurer.setPosition(0);
+
+            g2.translate(margin[0], margin[1]);
+
             while (measurer.getPosition() < text.length())
             {
                 // window is fixed size, so this is the quickest way of geting this to work
                 TextLayout layout = measurer.nextLayout(600-margin[0]-margin[2]);
+                drawLinePos += lineHeight;
                 layout.draw(g2, 0, drawLinePos);
-                drawLinePos += g2.getFontMetrics().getHeight();
             }
-            // g2.drawString(text, 0, 0);
             g2.dispose();
             g.translate(0, size.getHeight()+margin[3]);
         }
@@ -257,8 +274,24 @@ public class Node
         Dimension d = new Dimension();
         if (nodes == null)
         {
+            int pageWidth = 600-margin[0]-margin[2];
+            int height = 0;
             FontMetrics metrics = g.getFontMetrics();
-            d.setSize(metrics.stringWidth(text), metrics.getHeight());
+
+            int lineHeight = metrics.getHeight();
+
+            LineBreakMeasurer measurer = getMeasurer(g);
+
+            while (measurer.getPosition() < text.length())
+            {
+                measurer.nextLayout(pageWidth);
+                height += lineHeight;
+            }
+
+            int width = metrics.stringWidth(text);
+            if (width > pageWidth) width = pageWidth;
+
+            d.setSize(width, height);
         }
         else
         {
@@ -274,6 +307,7 @@ public class Node
         }
         return d;
     }
+
 
     /* enum of all supported rules */
     private enum RuleType {

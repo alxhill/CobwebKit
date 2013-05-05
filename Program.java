@@ -99,6 +99,7 @@ public class Program implements Runnable {
     {
         JFrame w = new JFrame(windowTitle);
         w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        w.setResizable(false);
         w.add(view);
         w.pack();
         w.setLocationByPlatform(true);
