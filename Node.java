@@ -2,7 +2,8 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.awt.*;
-import java.awt.font.TextAttribute;
+import java.awt.font.*;
+import java.text.AttributedString;
 
 public class Node
 {
@@ -205,21 +206,35 @@ public class Node
     public void render(Graphics2D g)
     {
 
-
         // render this if text or the nodes if not.
         if (nodes ==  null)
         {
             Graphics2D g2 = (Graphics2D) g.create();
+
             // apply the current CSS styles to the new graphics object
             for (Map.Entry<String, String> rule : rules.entrySet())
             {
                 applyRule(g2, rule.getKey(), rule.getValue());
             }
+
+            AttributedString attrText = new AttributedString(text, g2.getFont().getAttributes());
+            LineBreakMeasurer measurer = new LineBreakMeasurer(attrText.getIterator(), g2.getFontRenderContext());
+
             Dimension size = getSize(g2);
+
             g2.translate(margin[0], size.getHeight()+margin[1]);
-            g2.drawString(text, 0, 0);
+
+            int drawLinePos = 0;
+            while (measurer.getPosition() < text.length())
+            {
+                // window is fixed size, so this is the quickest way of geting this to work
+                TextLayout layout = measurer.nextLayout(600-margin[0]-margin[2]);
+                layout.draw(g2, 0, drawLinePos);
+                drawLinePos += g2.getFontMetrics().getHeight();
+            }
+            // g2.drawString(text, 0, 0);
             g2.dispose();
-            g.translate(margin[1] + margin[2], size.getHeight()+margin[3]);
+            g.translate(0, size.getHeight()+margin[3]);
         }
         else
         {
@@ -265,7 +280,7 @@ public class Node
         COLOR,
         FONTSIZE, FONTFAMILY, FONTWEIGHT, FONTSTYLE,
         MARGINTOP, MARGINLEFT, MARGINRIGHT, MARGINBOTTOM,
-        TEXTALIGN, TEXTDECORATION
+        TEXTDECORATION
     }
 
     /**
@@ -339,8 +354,6 @@ public class Node
                 break;
             case MARGINBOTTOM:
                 margin[3] = Integer.parseInt(value.substring(0, value.indexOf("px")));
-                break;
-            case TEXTALIGN:
                 break;
             case TEXTDECORATION:
                 if (value.equals("underline"))

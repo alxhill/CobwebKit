@@ -9,19 +9,11 @@ Currently it is able to:
 * Get styles from style tags on the page
 * Parse styles into a selector and rules
 * Apply styles through the HTML tree
-* Renders text only nodes
-* Renders with correct CSS styles
+* Renders text nodes only
+* Renders with correct CSS styles, but with very basic cascading
+* Supports CSS to change font style/size/weight, color and margins
 
 To do:
-* Implement support for more rules
-    * font stuff
-        font-weight, font-family, font-style
-    * margins - v.simple in this system
-    * text-{align:center, decoration: underline}
-    * display: block vs inline?
-* Create a set of default styles
-
-* Add support for wrapped text (for the p tag)
 * Selector specificity
 * Add support for img tags
 * Make a distinction between block and inline elements

@@ -19,7 +19,7 @@ public class Program implements Runnable {
 
         PageView()
         {
-            setPreferredSize(new Dimension(800, 600));
+            setPreferredSize(new Dimension(600, 800));
         }
 
         public void paintComponent(Graphics g)
