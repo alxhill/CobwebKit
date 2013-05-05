@@ -12,14 +12,18 @@ public class Program implements Runnable {
     Node head;
     Node body;
 
+    Dimension size;
+
     PageView view = new PageView();
 
     // small internal class that renders the body element
     private class PageView extends JPanel {
 
+        Dimension bodySize;
+
         PageView()
         {
-            setPreferredSize(new Dimension(600, 800));
+            setPreferredSize(new Dimension(800, 1000));
         }
 
         public void paintComponent(Graphics g)
@@ -27,16 +31,16 @@ public class Program implements Runnable {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
             body.render(g2);
+
         }
     }
 
     public static void main(String[] args)
     {
-        String filename = args.length == 0 ? "test.html" : args[0];
+        String filename = args.length == 0 ? "report.html" : args[0];
         Program program = new Program();
         String htmlString = program.readFile(filename);
         program.parseData(htmlString);
-        System.out.println(program.html);
         SwingUtilities.invokeLater(program);
     }
 

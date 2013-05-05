@@ -246,7 +246,7 @@ public class Node
             while (measurer.getPosition() < text.length())
             {
                 // window is fixed size, so this is the quickest way of geting this to work
-                TextLayout layout = measurer.nextLayout(600-margin[0]-margin[2]);
+                TextLayout layout = measurer.nextLayout(800-margin[0]-margin[2]);
                 drawLinePos += lineHeight;
                 layout.draw(g2, 0, drawLinePos);
             }
@@ -274,7 +274,7 @@ public class Node
         Dimension d = new Dimension();
         if (nodes == null)
         {
-            int pageWidth = 600-margin[0]-margin[2];
+            int pageWidth = 800-margin[0]-margin[2];
             int height = 0;
             FontMetrics metrics = g.getFontMetrics();
 

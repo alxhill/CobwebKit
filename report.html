@@ -1,0 +1,101 @@
+<html>
+<head>
+    <title>CobWebKit - The world's worst rendering engine</title>
+    <style>
+
+    .title {
+        text-decoration: underline;
+    }
+
+    #notice {
+        color: red;
+        font-size: 20px;
+    }
+
+    p {
+        font-family: sans-serif;
+    }
+
+    .indent {
+        font-family: sans-serif;
+        margin-left: 20px;
+    }
+
+    #style-color {
+        color: blue;
+    }
+
+    #style-font-size {
+        font-size: 20px;
+    }
+
+    #style-font-family {
+        font-family: serif;
+    }
+
+    #style-font-weight {
+        font-weight: bold;
+    }
+
+    #style-font-style {
+        font-style: italic;
+    }
+
+    #style-text-decoration {
+        text-decoration: underline;
+    }
+
+    </style>
+</head>
+<body>
+    <h1 class="title">CobWebKit</h1>
+    <h2>The world's worst rendering engine</h2>
+
+    <p id="notice">You can view this page in my rendering engine - run 'java Program' from the command line and it will open this file by default</p>
+
+    <p>CobWebKit is a custom written rending engine for HTML and CSS. It includes parsers for both languages, and outputs its graphical display to a JPanel.</p>
+
+    <h3>Capabilities</h3>
+    <div class="indent">
+        <p>CobWebKit is able to perform a number of functions, including:</p>
+        <ul>
+            <li>Parse simple HTML pages into a tree.</li>
+            <li>Store HTML attributes such as id as part of the node.</li>
+            <li>Place the title tag content into the window title.</li>
+            <li>Read CSS from any style tags.</li>
+            <li>Parse the CSS, along with the default stylesheet into a list of selectors and rules.</li>
+            <li>Identify multiple separate selectors as well as ids, classes and tags from the selector</li>
+            <li>Apply the CSS rules to the correct elements in the tree and their children.</li>
+            <li>Render each element with the correct CSS styles, wrapping paragraphs as necessary.</li>
+        </ul>
+    </div>
+
+    <h3>Supported Styles</h3>
+    <div class="indent">
+        <p>CobWebKit supports the following CSS properties:</p>
+        <ul>
+            <li id="style-color">color</li>
+            <li id="style-font-size">font-size</li>
+            <li id="style-font-family">font-family</li>
+            <li id="style-font-weight">font-weight</li>
+            <li id="style-font-style">font-style</li>
+            <li id="style-margin-top">margin-top</li>
+            <li id="style-margin-left">margin-left</li>
+            <li id="style-margin-right">margin-right</li>
+            <li id="style-margin-bottom">margin-bottom</li>
+            <li id="style-text-decoration">text-decoration</li>
+        </ul>
+        <p>They do not display in quite the same way as they would in an actual browser, but do perform the same core functionality as the browser equivalents.</p>
+    </div>
+    <h3>Limitations</h3>
+    <div class="indent">
+        <p>In order to keep the project feasable for a single week, there are a few limitations</p>
+        <h4>Parsing Limitations</h4>
+        <p>All HTML elements can either contain text or other nodes, but not both. There is also no support for self closing tags, such as img tags.</p>
+        <p>The CSS parser is closer to the CSS parser a browser would use, but does not offer support for any selectors that use newer CSS features.</p>
+        <p>Neither parser does any kind of validation - they both assume that the input string is valid.</p>
+        <h4>Other limitations</h4>
+        <p>There is no support for CSS selector specificity, so a selector that applies to one element immediately overrides any rules that came before it. This applies to the children of elements too, so writing body {color: white;} would make the whole screen blank.</p>
+    </div>
+</body>
+</html>
