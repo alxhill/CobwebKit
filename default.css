@@ -1,5 +1,5 @@
 body {
-    font-size: 13px;
+    font-size: 14px;
     font-family: serif;
     font-weight: normal;
     margin-left:10px;
@@ -19,31 +19,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 30px;
+    font-size: 35px;
 }
 
 h2 {
-    font-size: 24px;
+    font-size: 30px;
 }
 
 h3 {
-    font-size: 20px;
+    font-size: 24px;
 }
 
 h4 {
-    font-size: 16px;
+    font-size: 20px;
 }
 
 h5 {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 h6 {
-    font-size: 12px;
+    font-size: 15px;
 }
 
 p {
-    font-size: 13px;
+    font-size: 14px;
 }
 
 a {
