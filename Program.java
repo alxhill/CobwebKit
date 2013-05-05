@@ -32,10 +32,11 @@ public class Program implements Runnable {
 
     public static void main(String[] args)
     {
-        String filename = args.length() == 0 ? "test.html" : args[0];
+        String filename = args.length == 0 ? "test.html" : args[0];
         Program program = new Program();
         String htmlString = program.readFile(filename);
         program.parseData(htmlString);
+        System.out.println(program.html);
         SwingUtilities.invokeLater(program);
     }
 

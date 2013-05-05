@@ -31,6 +31,7 @@ class Style {
         for (String singleSelector : selector.split(" "))
         {
             HashMap<SelectorType,String> ruleMap = new HashMap<SelectorType,String>();
+
             for (String singleTypeSelector : singleSelector.trim().split("(?=[.#])"))
             {
                 switch (singleTypeSelector.charAt(0))

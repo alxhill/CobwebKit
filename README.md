@@ -13,17 +13,20 @@ Currently it is able to:
 * Renders with correct CSS styles
 
 To do:
-* Create a set of default styles
 * Implement support for more rules
     * font stuff
         font-weight, font-family, font-style
-    * padding/margin - will be equivalent
+    * margins - v.simple in this system
     * text-{align:center, decoration: underline}
+    * display: block vs inline?
+* Create a set of default styles
 
-* Add support for img tags
-* Make the parser able to have text and nodes alongside each other
-* Make parsing and rendering more robust
+* Add support for wrapped text (for the p tag)
 * Selector specificity
+* Add support for img tags
+* Make a distinction between block and inline elements
+
+* Make the parser able to have text and nodes alongside each other
 * Add support for inline styles
 * Add support for link tags
 * Add support for a tags/links?
